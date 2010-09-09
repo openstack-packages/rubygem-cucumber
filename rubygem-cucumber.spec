@@ -5,8 +5,8 @@
 
 Summary:        Tool to execute plain-text documents as functional tests
 Name:           rubygem-%{gemname}
-Version:        0.4.0
-Release:        1%{?dist}
+Version:        0.8.5
+Release:        4%{?dist}
 Group:          Development/Languages
 License:        MIT
 URL:            http://cukes.info
@@ -14,12 +14,14 @@ Source0:        http://gems.rubyforge.org/gems/%{gemname}-%{version}.gem
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       ruby(abi) = 1.8
 Requires:       rubygems
-Requires:       rubygem(term-ansicolor) >= 1.0.3
-Requires:       rubygem(treetop) >= 1.2.5
-Requires:       rubygem(polyglot) >= 0.2.5
+Requires:       rubygem(term-ansicolor) >= 1.0.4
 Requires:       rubygem(diff-lcs) >= 1.1.2
 Requires:       rubygem(builder) >= 2.1.2
+Requires:       rubygem(gherkin) >= 2.0.2
+Requires:       rubygem(json) >= 1.1.9
 BuildRequires:  rubygems
+BuildRequires:  rubygem(nokogiri) >= 1.4.2
+BuildRequires:  rubygem(rspec) >= 1.3.0
 BuildArch:      noarch
 Provides:       rubygem(%{gemname}) = %{version}
 
@@ -48,6 +50,13 @@ find $RPM_BUILD_ROOT%{geminstdir}/bin -type f |xargs chmod a+x
 # Remove zero-length documentation files
 find $RPM_BUILD_ROOT%{gemdir}/doc/%{gemname}-%{version} -empty -delete
 
+sed -i -e "s|json_pure|json|" %{buildroot}%{geminstdir}/cucumber.gemspec
+sed -i -e "s|1.4.3|1.1.9|" %{buildroot}%{geminstdir}/cucumber.gemspec
+sed -i -e "s|json_pure|json|" %{buildroot}%{gemdir}/specifications/%{gemname}-%{version}.gemspec
+sed -i -e "s|1.4.3|1.1.9|" %{buildroot}%{gemdir}/specifications/%{gemname}-%{version}.gemspec
+sed -i -e "s|2.0.0.beta.15|1.3.0|" %{buildroot}%{gemdir}/specifications/%{gemname}-%{version}.gemspec
+
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -58,25 +67,44 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/cucumber
 %dir %{geminstdir}
 %{geminstdir}/bin
-%{geminstdir}/config
 %{geminstdir}/features
 %{geminstdir}/gem_tasks
 %{geminstdir}/lib
-%{geminstdir}/rails_generators
+%{geminstdir}/fixtures
 %{geminstdir}/spec
 %{geminstdir}/cucumber.yml
+%{geminstdir}/cucumber.gemspec
 %{geminstdir}/Rakefile
+%{geminstdir}/.git*
+%{geminstdir}/.rspec
 %doc %{geminstdir}/examples
 %doc %{gemdir}/doc/%{gemname}-%{version}
 %doc %{geminstdir}/History.txt
-%doc %{geminstdir}/License.txt
-%doc %{geminstdir}/Manifest.txt
-%doc %{geminstdir}/README.txt
+%doc %{geminstdir}/LICENSE
+%doc %{geminstdir}/README.rdoc
+%doc %{geminstdir}/VERSION.yml
+%doc %{geminstdir}/Caliper.yml
 %{gemdir}/cache/%{gemname}-%{version}.gem
 %{gemdir}/specifications/%{gemname}-%{version}.gemspec
 
 
 %changelog
+* Wed Aug 04 2010 Michal Fojtik <mfojtik@redhat.com> - 0.8.3-4
+- Fixed JSON version
+
+* Wed Aug 04 2010 Michal Fojtik <mfojtik@redhat.com> - 0.8.3-3
+- Removed JSON patch (JSON updated in Fedora)
+
+* Wed Aug 01 2010 Michal Fojtik <mfojtik@redhat.com> - 0.8.3-2
+- Patched Rakefile and replaced rspec beta version dependency
+- Patched Rakefile and downgraded JSON dependency
+
+* Wed Jun 30 2010 Michal Fojtik <mfojtik@redhat.com> - 0.8.3-1
+- Newer release
+
+* Sun Oct 18 2009 Lubomir Rintel (Good Data) <lubo.rintel@gooddata.com> - 0.4.2-1
+- Newer release
+
 * Mon Oct 12 2009 Lubomir Rintel (Good Data) <lubo.rintel@gooddata.com> - 0.4.0-1
 - Newer release
 

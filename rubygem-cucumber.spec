@@ -5,8 +5,8 @@
 
 Summary:        Tool to execute plain-text documents as functional tests
 Name:           rubygem-%{gemname}
-Version:        0.8.5
-Release:        4%{?dist}
+Version:        0.9.0
+Release:        1%{?dist}
 Group:          Development/Languages
 License:        MIT
 URL:            http://cukes.info
@@ -45,7 +45,11 @@ gem install --local --install-dir $RPM_BUILD_ROOT%{gemdir} \
 mkdir -p $RPM_BUILD_ROOT/%{_bindir}
 mv $RPM_BUILD_ROOT%{gemdir}/bin/* $RPM_BUILD_ROOT/%{_bindir}
 rmdir $RPM_BUILD_ROOT%{gemdir}/bin
+rm -f $RPM_BUILD_ROOT%{geminstdir}/.rvmrc
+rm -f $RPM_BUILD_ROOT%{geminstdir}/.gitattributes
+rm -f $RPM_BUILD_ROOT%{geminstdir}/.rspec
 find $RPM_BUILD_ROOT%{geminstdir}/bin -type f |xargs chmod a+x
+find $RPM_BUILD_ROOT%{geminstdir} -type f | grep '.gitignore' | xargs rm -f
 
 # Remove zero-length documentation files
 find $RPM_BUILD_ROOT%{gemdir}/doc/%{gemname}-%{version} -empty -delete
@@ -75,20 +79,21 @@ rm -rf $RPM_BUILD_ROOT
 %{geminstdir}/cucumber.yml
 %{geminstdir}/cucumber.gemspec
 %{geminstdir}/Rakefile
-%{geminstdir}/.git*
-%{geminstdir}/.rspec
 %doc %{geminstdir}/examples
 %doc %{gemdir}/doc/%{gemname}-%{version}
 %doc %{geminstdir}/History.txt
 %doc %{geminstdir}/LICENSE
 %doc %{geminstdir}/README.rdoc
-%doc %{geminstdir}/VERSION.yml
-%doc %{geminstdir}/Caliper.yml
+%doc %{geminstdir}/Gemfile
 %{gemdir}/cache/%{gemname}-%{version}.gem
 %{gemdir}/specifications/%{gemname}-%{version}.gemspec
 
 
 %changelog
+* Fri Sep 24 2010 Michal Fojtik <mfojtik@redhat.com> - 0.9.0-1
+- Version bump to match upstream
+- Fixed dependency issue with new gherkin package
+
 * Wed Aug 04 2010 Michal Fojtik <mfojtik@redhat.com> - 0.8.3-4
 - Fixed JSON version
 

@@ -6,7 +6,7 @@
 Summary:        Tool to execute plain-text documents as functional tests
 Name:           rubygem-%{gemname}
 Version:        0.9.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Group:          Development/Languages
 License:        MIT
 URL:            http://cukes.info
@@ -17,7 +17,7 @@ Requires:       rubygems
 Requires:       rubygem(term-ansicolor) >= 1.0.4
 Requires:       rubygem(diff-lcs) >= 1.1.2
 Requires:       rubygem(builder) >= 2.1.2
-Requires:       rubygem(gherkin) >= 2.0.2
+Requires:       rubygem(gherkin) >= 2.2.4
 Requires:       rubygem(json) >= 1.1.9
 BuildRequires:  rubygems
 BuildRequires:  rubygem(nokogiri) >= 1.4.2
@@ -90,6 +90,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Sep 24 2010 Michal Fojtik <mfojtik@redhat.com> - 0.9.0-2
+- Fixed gherkin version in dependency list
+
 * Fri Sep 24 2010 Michal Fojtik <mfojtik@redhat.com> - 0.9.0-1
 - Version bump to match upstream
 - Fixed dependency issue with new gherkin package

@@ -6,7 +6,7 @@
 Summary:        Tool to execute plain-text documents as functional tests
 Name:           rubygem-%{gemname}
 Version:        0.9.0
-Release:        2%{?dist}
+Release:        4%{?dist}
 Group:          Development/Languages
 License:        MIT
 URL:            http://cukes.info
@@ -55,9 +55,9 @@ find $RPM_BUILD_ROOT%{geminstdir} -type f | grep '.gitignore' | xargs rm -f
 find $RPM_BUILD_ROOT%{gemdir}/doc/%{gemname}-%{version} -empty -delete
 
 sed -i -e "s|json_pure|json|" %{buildroot}%{geminstdir}/cucumber.gemspec
-sed -i -e "s|1.4.3|1.1.9|" %{buildroot}%{geminstdir}/cucumber.gemspec
+sed -i -e "s|~> 1.4.6|>= 1.1.9|" %{buildroot}%{geminstdir}/cucumber.gemspec
 sed -i -e "s|json_pure|json|" %{buildroot}%{gemdir}/specifications/%{gemname}-%{version}.gemspec
-sed -i -e "s|1.4.3|1.1.9|" %{buildroot}%{gemdir}/specifications/%{gemname}-%{version}.gemspec
+sed -i -e "s|~> 1.4.6|>= 1.1.9|" %{buildroot}%{gemdir}/specifications/%{gemname}-%{version}.gemspec
 sed -i -e "s|2.0.0.beta.15|1.3.0|" %{buildroot}%{gemdir}/specifications/%{gemname}-%{version}.gemspec
 
 
@@ -90,6 +90,12 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Sep 27 2010 Michal Fojtik <mfojtik@redhat.com> - 0.9.0-4
+- Fixed JSON version again
+
+* Fri Sep 24 2010 Michal Fojtik <mfojtik@redhat.com> - 0.9.0-3
+- Fixed JSON version
+
 * Fri Sep 24 2010 Michal Fojtik <mfojtik@redhat.com> - 0.9.0-2
 - Fixed gherkin version in dependency list
 

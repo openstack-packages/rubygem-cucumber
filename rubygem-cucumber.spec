@@ -5,7 +5,7 @@
 
 Summary:        Tool to execute plain-text documents as functional tests
 Name:           rubygem-%{gemname}
-Version:        0.9.0
+Version:        0.10.0
 Release:        4%{?dist}
 Group:          Development/Languages
 License:        MIT
@@ -85,11 +85,15 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{geminstdir}/LICENSE
 %doc %{geminstdir}/README.rdoc
 %doc %{geminstdir}/Gemfile
+%doc %{geminstdir}/legacy_features
 %{gemdir}/cache/%{gemname}-%{version}.gem
 %{gemdir}/specifications/%{gemname}-%{version}.gemspec
 
 
 %changelog
+* Fri Feb 04 2011 Michal Fojtik <mfojtik@redhat.com> - 0.10.0-1
+- Version bump
+
 * Mon Sep 27 2010 Michal Fojtik <mfojtik@redhat.com> - 0.9.0-4
 - Fixed JSON version again
 

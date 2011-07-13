@@ -5,8 +5,8 @@
 
 Summary:        Tool to execute plain-text documents as functional tests
 Name:           rubygem-%{gemname}
-Version:        0.10.0
-Release:        5%{?dist}
+Version:        1.0.1
+Release:        1%{?dist}
 Group:          Development/Languages
 License:        MIT
 URL:            http://cukes.info
@@ -14,14 +14,14 @@ Source0:        http://gems.rubyforge.org/gems/%{gemname}-%{version}.gem
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       ruby(abi) = 1.8
 Requires:       rubygems
-Requires:       rubygem(term-ansicolor) >= 1.0.4
+Requires:       rubygem(term-ansicolor) >= 1.0.5
 Requires:       rubygem(diff-lcs) >= 1.1.2
 Requires:       rubygem(builder) >= 2.1.2
-Requires:       rubygem(gherkin) >= 2.2.4
-Requires:       rubygem(json) >= 1.1.9
+Requires:       rubygem(gherkin) >= 2.4.5
+Requires:       rubygem(json) >= 1.4.6
 BuildRequires:  rubygems
-BuildRequires:  rubygem(nokogiri) >= 1.4.2
-BuildRequires:  rubygem(rspec) >= 1.3.0
+BuildRequires:  rubygem(nokogiri) >= 1.4.4
+BuildRequires:  rubygem(rspec-core) >= 2.6.0
 BuildArch:      noarch
 Provides:       rubygem(%{gemname}) = %{version}
 
@@ -47,6 +47,10 @@ mv $RPM_BUILD_ROOT%{gemdir}/bin/* $RPM_BUILD_ROOT/%{_bindir}
 rmdir $RPM_BUILD_ROOT%{gemdir}/bin
 rm -f $RPM_BUILD_ROOT%{geminstdir}/.rvmrc
 rm -f $RPM_BUILD_ROOT%{geminstdir}/.gitattributes
+rm -f $RPM_BUILD_ROOT%{geminstdir}/.gitmodules
+rm -f $RPM_BUILD_ROOT%{geminstdir}/.yardopts
+rm -f $RPM_BUILD_ROOT%{geminstdir}/.travis.yml
+rm -f $RPM_BUILD_ROOT%{geminstdir}/Gemfile.lock
 rm -f $RPM_BUILD_ROOT%{geminstdir}/.rspec
 find $RPM_BUILD_ROOT%{geminstdir}/bin -type f |xargs chmod a+x
 find $RPM_BUILD_ROOT%{geminstdir} -type f | grep '.gitignore' | xargs rm -f
@@ -81,9 +85,9 @@ rm -rf $RPM_BUILD_ROOT
 %{geminstdir}/Rakefile
 %doc %{geminstdir}/examples
 %doc %{gemdir}/doc/%{gemname}-%{version}
-%doc %{geminstdir}/History.txt
 %doc %{geminstdir}/LICENSE
-%doc %{geminstdir}/README.rdoc
+%doc %{geminstdir}/History.md
+%doc %{geminstdir}/README.md
 %doc %{geminstdir}/Gemfile
 %doc %{geminstdir}/legacy_features
 %{gemdir}/cache/%{gemname}-%{version}.gem
@@ -91,6 +95,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Jul 12 2011 Mo Morsi <mmorsi@redhat.com> - 1.0.1-1
+- update to latest upstream release
+
 * Wed Feb 09 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.10.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
 

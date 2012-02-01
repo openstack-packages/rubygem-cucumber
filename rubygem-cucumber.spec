@@ -1,29 +1,26 @@
-%global ruby_sitelib %(ruby -rrbconfig -e "puts Config::CONFIG['sitelibdir']")
-%global gemdir %(ruby -rubygems -e 'puts Gem::dir' 2>/dev/null)
-%global gemname cucumber
-%global geminstdir %{gemdir}/gems/%{gemname}-%{version}
+%global gem_name cucumber
 
 Summary:        Tool to execute plain-text documents as functional tests
-Name:           rubygem-%{gemname}
+Name:           rubygem-%{gem_name}
 Version:        1.0.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Group:          Development/Languages
 License:        MIT
 URL:            http://cukes.info
-Source0:        http://gems.rubyforge.org/gems/%{gemname}-%{version}.gem
+Source0:        http://gems.rubyforge.org/gems/%{gem_name}-%{version}.gem
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires:       ruby(abi) = 1.8
-Requires:       rubygems
+Requires:       ruby(abi) = 1.9.1
+Requires:       ruby(rubygems)
 Requires:       rubygem(term-ansicolor) >= 1.0.5
 Requires:       rubygem(diff-lcs) >= 1.1.2
 Requires:       rubygem(builder) >= 2.1.2
 Requires:       rubygem(gherkin) >= 2.4.5
 Requires:       rubygem(json) >= 1.4.6
-BuildRequires:  rubygems
+BuildRequires:  rubygems-devel
 BuildRequires:  rubygem(nokogiri) >= 1.4.4
 BuildRequires:  rubygem(rspec-core) >= 2.6.0
 BuildArch:      noarch
-Provides:       rubygem(%{gemname}) = %{version}
+Provides:       rubygem(%{gem_name}) = %{version}
 
 %description
 Cucumber lets software development teams describe how software should behave
@@ -39,30 +36,30 @@ language and serves as documentation, automated tests and development-aid.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{gemdir}
-gem install --local --install-dir $RPM_BUILD_ROOT%{gemdir} \
+mkdir -p $RPM_BUILD_ROOT%{gem_dir}
+gem install --local --install-dir $RPM_BUILD_ROOT%{gem_dir} \
         --force --rdoc %{SOURCE0}
 mkdir -p $RPM_BUILD_ROOT/%{_bindir}
-mv $RPM_BUILD_ROOT%{gemdir}/bin/* $RPM_BUILD_ROOT/%{_bindir}
-rmdir $RPM_BUILD_ROOT%{gemdir}/bin
-rm -f $RPM_BUILD_ROOT%{geminstdir}/.rvmrc
-rm -f $RPM_BUILD_ROOT%{geminstdir}/.gitattributes
-rm -f $RPM_BUILD_ROOT%{geminstdir}/.gitmodules
-rm -f $RPM_BUILD_ROOT%{geminstdir}/.yardopts
-rm -f $RPM_BUILD_ROOT%{geminstdir}/.travis.yml
-rm -f $RPM_BUILD_ROOT%{geminstdir}/Gemfile.lock
-rm -f $RPM_BUILD_ROOT%{geminstdir}/.rspec
-find $RPM_BUILD_ROOT%{geminstdir}/bin -type f |xargs chmod a+x
-find $RPM_BUILD_ROOT%{geminstdir} -type f | grep '.gitignore' | xargs rm -f
+mv $RPM_BUILD_ROOT%{gem_dir}/bin/* $RPM_BUILD_ROOT/%{_bindir}
+rmdir $RPM_BUILD_ROOT%{gem_dir}/bin
+rm -f $RPM_BUILD_ROOT%{gem_instdir}/.rvmrc
+rm -f $RPM_BUILD_ROOT%{gem_instdir}/.gitattributes
+rm -f $RPM_BUILD_ROOT%{gem_instdir}/.gitmodules
+rm -f $RPM_BUILD_ROOT%{gem_instdir}/.yardopts
+rm -f $RPM_BUILD_ROOT%{gem_instdir}/.travis.yml
+rm -f $RPM_BUILD_ROOT%{gem_instdir}/Gemfile.lock
+rm -f $RPM_BUILD_ROOT%{gem_instdir}/.rspec
+find $RPM_BUILD_ROOT%{gem_instdir}/bin -type f |xargs chmod a+x
+find $RPM_BUILD_ROOT%{gem_instdir} -type f | grep '.gitignore' | xargs rm -f
 
 # Remove zero-length documentation files
-find $RPM_BUILD_ROOT%{gemdir}/doc/%{gemname}-%{version} -empty -delete
+find $RPM_BUILD_ROOT%{gem_docdir} -empty -delete
 
-sed -i -e "s|json_pure|json|" %{buildroot}%{geminstdir}/cucumber.gemspec
-sed -i -e "s|~> 1.4.6|>= 1.1.9|" %{buildroot}%{geminstdir}/cucumber.gemspec
-sed -i -e "s|json_pure|json|" %{buildroot}%{gemdir}/specifications/%{gemname}-%{version}.gemspec
-sed -i -e "s|~> 1.4.6|>= 1.1.9|" %{buildroot}%{gemdir}/specifications/%{gemname}-%{version}.gemspec
-sed -i -e "s|2.0.0.beta.15|1.3.0|" %{buildroot}%{gemdir}/specifications/%{gemname}-%{version}.gemspec
+sed -i -e "s|json_pure|json|" %{buildroot}%{gem_instdir}/cucumber.gemspec
+sed -i -e "s|~> 1.4.6|>= 1.1.9|" %{buildroot}%{gem_instdir}/cucumber.gemspec
+sed -i -e "s|json_pure|json|" %{buildroot}%{gem_spec}
+sed -i -e "s|~> 1.4.6|>= 1.1.9|" %{buildroot}%{gem_spec}
+sed -i -e "s|2.0.0.beta.15|1.3.0|" %{buildroot}%{gem_spec}
 
 
 
@@ -73,28 +70,31 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %{_bindir}/cucumber
-%dir %{geminstdir}
-%{geminstdir}/bin
-%{geminstdir}/features
-%{geminstdir}/gem_tasks
-%{geminstdir}/lib
-%{geminstdir}/fixtures
-%{geminstdir}/spec
-%{geminstdir}/cucumber.yml
-%{geminstdir}/cucumber.gemspec
-%{geminstdir}/Rakefile
-%doc %{geminstdir}/examples
-%doc %{gemdir}/doc/%{gemname}-%{version}
-%doc %{geminstdir}/LICENSE
-%doc %{geminstdir}/History.md
-%doc %{geminstdir}/README.md
-%doc %{geminstdir}/Gemfile
-%doc %{geminstdir}/legacy_features
-%{gemdir}/cache/%{gemname}-%{version}.gem
-%{gemdir}/specifications/%{gemname}-%{version}.gemspec
+%dir %{gem_instdir}
+%{gem_instdir}/bin
+%{gem_instdir}/features
+%{gem_instdir}/gem_tasks
+%{gem_libdir}
+%{gem_instdir}/fixtures
+%{gem_instdir}/spec
+%{gem_instdir}/cucumber.yml
+%{gem_instdir}/cucumber.gemspec
+%{gem_instdir}/Rakefile
+%doc %{gem_instdir}/examples
+%doc %{gem_docdir}
+%doc %{gem_instdir}/LICENSE
+%doc %{gem_instdir}/History.md
+%doc %{gem_instdir}/README.md
+%doc %{gem_instdir}/Gemfile
+%doc %{gem_instdir}/legacy_features
+%{gem_cache}
+%{gem_spec}
 
 
 %changelog
+* Wed Feb 01 2012 Bohuslav Kabrda <bkabrda@redhat.com> - 1.0.1-3
+- Rebuilt for Ruby 1.9.3.
+
 * Sat Jan 14 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.0.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
 

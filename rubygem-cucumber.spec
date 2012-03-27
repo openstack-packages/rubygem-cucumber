@@ -2,8 +2,8 @@
 
 Summary:        Tool to execute plain-text documents as functional tests
 Name:           rubygem-%{gem_name}
-Version:        1.0.1
-Release:        3%{?dist}
+Version:        1.1.9
+Release:        1%{?dist}
 Group:          Development/Languages
 License:        MIT
 URL:            http://cukes.info
@@ -92,6 +92,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Mar 27 2012 Jeroen van Meeuwen <vanmeeuwen@kolabsys.com> - 1.1.9-1
+- Update cucumber to version 1.1.9
+
 * Wed Feb 01 2012 Bohuslav Kabrda <bkabrda@redhat.com> - 1.0.1-3
 - Rebuilt for Ruby 1.9.3.
 

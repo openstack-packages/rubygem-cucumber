@@ -2,8 +2,8 @@
 
 Summary:        Tool to execute plain-text documents as functional tests
 Name:           rubygem-%{gem_name}
-Version:        1.1.9
-Release:        2%{?dist}
+Version: 1.2.1
+Release: 1%{?dist}
 Group:          Development/Languages
 License:        MIT
 URL:            http://cukes.info
@@ -92,6 +92,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Nov 13 2012 Mo Morsi <mmorsi@redhat.com> - 1.2.1-1
+- Update cucumber to version 1.2.1
+
 * Sat Jul 21 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.1.9-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
 

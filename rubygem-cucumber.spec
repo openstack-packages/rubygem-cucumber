@@ -3,13 +3,13 @@
 Summary:        Tool to execute plain-text documents as functional tests
 Name:           rubygem-%{gem_name}
 Version: 1.2.1
-Release: 2%{?dist}
+Release: 3%{?dist}
 Group:          Development/Languages
 License:        MIT
 URL:            http://cukes.info
 Source0:        http://gems.rubyforge.org/gems/%{gem_name}-%{version}.gem
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires:       ruby(abi) = 1.9.1
+Requires:       ruby(release)
 Requires:       ruby(rubygems)
 Requires:       rubygem(term-ansicolor) >= 1.0.5
 Requires:       rubygem(diff-lcs) >= 1.1.2
@@ -17,8 +17,6 @@ Requires:       rubygem(builder) >= 2.1.2
 Requires:       rubygem(gherkin) >= 2.4.5
 Requires:       rubygem(json) >= 1.4.6
 BuildRequires:  rubygems-devel
-BuildRequires:  rubygem(nokogiri) >= 1.4.4
-BuildRequires:  rubygem(rspec-core) >= 2.6.0
 BuildArch:      noarch
 Provides:       rubygem(%{gem_name}) = %{version}
 
@@ -29,19 +27,24 @@ language and serves as documentation, automated tests and development-aid.
 
 
 %prep
-
+%setup -q -c  -T
+%gem_install -n %{SOURCE0}
 
 %build
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{gem_dir}
-gem install --local --install-dir $RPM_BUILD_ROOT%{gem_dir} \
-        --force --rdoc %{SOURCE0}
-mkdir -p $RPM_BUILD_ROOT/%{_bindir}
-mv $RPM_BUILD_ROOT%{gem_dir}/bin/* $RPM_BUILD_ROOT/%{_bindir}
-rmdir $RPM_BUILD_ROOT%{gem_dir}/bin
+mkdir -p %{buildroot}%{gem_dir}
+cp -pa .%{gem_dir}/* \
+        %{buildroot}%{gem_dir}/
+
+
+mkdir -p %{buildroot}%{_bindir}
+cp -pa .%{_bindir}/* \
+        %{buildroot}%{_bindir}/
+
+find %{buildroot}%{gem_instdir}/bin -type f | xargs chmod a+x
+
 rm -f $RPM_BUILD_ROOT%{gem_instdir}/.rvmrc
 rm -f $RPM_BUILD_ROOT%{gem_instdir}/.gitattributes
 rm -f $RPM_BUILD_ROOT%{gem_instdir}/.gitmodules
@@ -49,22 +52,11 @@ rm -f $RPM_BUILD_ROOT%{gem_instdir}/.yardopts
 rm -f $RPM_BUILD_ROOT%{gem_instdir}/.travis.yml
 rm -f $RPM_BUILD_ROOT%{gem_instdir}/Gemfile.lock
 rm -f $RPM_BUILD_ROOT%{gem_instdir}/.rspec
-find $RPM_BUILD_ROOT%{gem_instdir}/bin -type f |xargs chmod a+x
 find $RPM_BUILD_ROOT%{gem_instdir} -type f | grep '.gitignore' | xargs rm -f
 
 # Remove zero-length documentation files
 find $RPM_BUILD_ROOT%{gem_docdir} -empty -delete
 
-sed -i -e "s|json_pure|json|" %{buildroot}%{gem_instdir}/cucumber.gemspec
-sed -i -e "s|~> 1.4.6|>= 1.1.9|" %{buildroot}%{gem_instdir}/cucumber.gemspec
-sed -i -e "s|json_pure|json|" %{buildroot}%{gem_spec}
-sed -i -e "s|~> 1.4.6|>= 1.1.9|" %{buildroot}%{gem_spec}
-sed -i -e "s|2.0.0.beta.15|1.3.0|" %{buildroot}%{gem_spec}
-
-
-
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 
 %files
@@ -92,6 +84,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Feb 23 2013 Vít Ondruch <vondruch@redhat.com> - 1.2.1-3
+- Rebuild for https://fedoraproject.org/wiki/Features/Ruby_2.0.0
+- Drop useless build requires.
+
 * Thu Feb 14 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.2.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 

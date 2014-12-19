@@ -2,8 +2,8 @@
 
 Summary:        Tool to execute plain-text documents as functional tests
 Name:           rubygem-%{gem_name}
-Version: 1.2.1
-Release: 3%{?dist}
+Version:        1.2.1
+Release:        4%{?dist}
 Group:          Development/Languages
 License:        MIT
 URL:            http://cukes.info
@@ -84,6 +84,9 @@ find $RPM_BUILD_ROOT%{gem_docdir} -empty -delete
 
 
 %changelog
+* Fri Dec 19 2014 Troy Dawson <tdawson@redhat.com> - 1.2.1-4
+- Update spec to work in EPEL7
+
 * Sat Feb 23 2013 Vít Ondruch <vondruch@redhat.com> - 1.2.1-3
 - Rebuild for https://fedoraproject.org/wiki/Features/Ruby_2.0.0
 - Drop useless build requires.
